@@ -52,9 +52,22 @@ describe "Authentication", ->
     
       it "shows successful flash message", ->
         successMsg = "You are logged in as piechef"
-        console.log body
+        # console.log body
+        # console.log "====="
+        # console.log response
         assert.hasTag body, "//p[@class='flash info']", successMsg
 
-      
-      
+    describe "DELETE /sessions (a.k.a Logout)", ->
+      [body, response] = [null, null]
+      before (done) ->
+        options =
+          uri: "http://localhost:#{app.settings.port}/sessions"
+          followAllRedirects: true
+        request.del options, (err, _response, _body) ->
+          [body, response] = [_body, _response]
+          done()
+          
+      it "shows flash message after successfully logging out", ->
+        logoutMsg = "You've been logged out."
+        assert.hasTag body, "//p[@class='flash info']", logoutMsg
       

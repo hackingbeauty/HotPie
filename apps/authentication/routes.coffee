@@ -14,4 +14,9 @@ routes = (app) ->
     req.flash "error", "Those credentials were incorrect.  Try again."
     res.redirect "/login"
     
+  app.del "/sessions", (req, res) ->
+    req.session.regenerate (err) ->
+      req.flash "info", "You've been logged out."
+      res.redirect "/login"
+    
 module.exports = routes
