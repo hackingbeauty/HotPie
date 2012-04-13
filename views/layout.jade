@@ -4,5 +4,13 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/#{stylesheet}.css')
   body
-    #header= title
+    #header
+      h1= title
+      
+    - var flashTypes = ["info","error"]
+    each flashType in flashTypes
+      if flash[flashType]
+        p.flash(class=flashType)
+          = flash[flashType]
+      
     != body
