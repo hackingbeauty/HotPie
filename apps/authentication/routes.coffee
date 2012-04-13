@@ -13,7 +13,5 @@ routes = (app) ->
       return
     req.flash "error", "Those credentials were incorrect.  Try again."
     res.redirect "/login"
-    # res.writeHead(302, {});
-    # res.end('whatever');
     
 module.exports = routes

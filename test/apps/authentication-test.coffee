@@ -16,3 +16,45 @@ describe "Authentication", ->
               
     it "has title", ->
       assert.hasTag body, "//head/title", "Hot Pie - Login"
+      
+  describe "POST /sessions", ->
+    
+    describe "incorrect credentials", ->
+      [body, response] = [null,null]
+      before (done) ->
+        options = 
+          uri: "http://localhost:#{app.settings.port}/sessions"
+          form:
+            user: "incorrect"
+            password: "incorect"
+          followAllRedirects: true
+        request.post options, (err, _response, _body) ->
+          [body, response] = [_body, _response]
+          done()
+          
+      it "shows error flash message", ->
+        errorText = "Those credentials were incorrect.  Try again."
+        assert.hasTag body, "//p[@class='flash error']", errorText
+        
+        
+    describe "correct credentials", ->
+      [body, response] = [null, null]
+      before (done) ->
+        options =
+          uri: "http://localhost:#{app.settings.port}/sessions"
+          form:
+            user: "piechef"
+            password: "12345"
+          followAllRedirects: true
+        request.post options, (err, _response, _body) ->
+          [body, response] = [_body, _response]
+          done()
+    
+      it "shows successful flash message", ->
+        successMsg = "You are logged in as piechef"
+        console.log body
+        assert.hasTag body, "//p[@class='flash info']", successMsg
+
+      
+      
+      
